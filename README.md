@@ -1,4 +1,4 @@
-# Classic Arcade Game Clone Project
+# Bumpy Bugs
 
 ## Table of Contents
 
@@ -7,13 +7,9 @@
 
 ## Instructions
 
-Use this [rubric](https://review.udacity.com/#!/rubrics/15/view) for self-checking your submission.
+Move the Player character left, right, up or down using the keyboard arrow keys. Get to the water to win. But be careful! Don't bump into the bugs, or you'll go back to the beginning. 
 
-Make sure the functions you write are **object-oriented** - either class functions (like `Player` and `Enemy`) or class prototype functions such as `Enemy.prototype.checkCollisions`. Also make sure that the keyword `this` is used appropriately within your class and class prototype functions to refer to the object the function is called upon.
-
-Your **README.md** file should be updated with instructions on both how to 1. Run and 2. Play your arcade game.
-
-For detailed instructions on how to get started, check out this [guide](https://docs.google.com/document/d/1v01aScPjSWCCWQLIpFqvg3-vXLH2e8_SZQKC8jNO0Dc/pub?embedded=true).
+After you win, press the button to replay.
 
 ## Contributing
 
