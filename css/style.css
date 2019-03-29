@@ -23,7 +23,7 @@ body {
     z-index: 9999;
 }
 
-#modalButton { 
+.modalButton { 
     background-color: white;
     color: #48b33c;
     height: 30px;

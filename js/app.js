@@ -1,34 +1,34 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+"use strict";
+class Enemy {
+    constructor(y) {
+        this.sprite = 'images/enemy-bug.png';
+        //randomize starting point of enemy
+        this.x = Math.floor(Math.random() * 1000);
+        this.y = y;
+        this.speed = Math.floor((Math.random() * 150) + 100);
+    }
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
-    //randomize starting point of enemy
-    this.x = Math.floor(Math.random() * 1000);
-};
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    let random = Math.floor(Math.random() * 300) * dt;
-    if (this.x < 420) {
-        this.x = random + this.x;
-    } else if (this.x > 420) {
-        this.x = 0
+
+    // Update the enemy's position, required method for game
+    // Parameter: dt, a time delta between ticks
+    update(dt) {
+        // You should multiply any movement by the dt parameter
+        // which will ensure the game runs at the same speed for
+        // all computers.
+
+        if (this.x < 420) {
+            this.x = (this.speed * dt) + this.x;
+        } else if (this.x > 420) {
+            this.x = 0;
+        }
+    }
+
+    // Draw the enemy on the screen, required method for game
+    render = function () {
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
-};
-
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
+}
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
@@ -42,16 +42,16 @@ class Player {
     update(dt) {
         //Check collisions
         // loop thru allEnemies
-        allEnemies.forEach(function(enemy) {
+        allEnemies.forEach((enemy) => {
             let enemyX1 = Math.round(enemy.x) - 50;
             let enemyX2 = Math.round(enemy.x) + 50;
             let enemyY1 = enemy.y - 50;
             let enemyY2 = enemy.y + 50;
-            if ((player.x >= enemyX1 && player.x <= enemyX2) && (player.y >= enemyY1 && player.y <= enemyY2)) {
-                console.log("collision!");
-                player.resetPlayer();
-            };
-        })
+            if ((this.x >= enemyX1 && this.x <= enemyX2) && (this.y >= enemyY1 && this.y <= enemyY2)) {
+                //console.log("collision!");
+                this.resetPlayer();
+            }
+        });
 
     }
 
@@ -62,44 +62,57 @@ class Player {
     handleInput(key) {
         if (key == 'left' && this.x > 0) {
             this.x = this.x - 35;
-        };
+        }
         if (key == 'left' && this.x <= 0) {
             this.x = 0;
-        };
+        }
         if (key == 'up' && this.y <= 440) {
             this.y = this.y - 30;
-        };
+        }
         if (key == 'up' && this.y <= 0) {
-            player.win();
-            player.resetPlayer();
-        };
+            this.win();
+            this.resetPlayer();
+        }
         if (key == 'right' && this.x < 420) {
             this.x = this.x + 35;
-        };
+        }
         if (key == 'right' && this.x > 420) {
             this.x = 420;
-        };
+        }
         if (key == 'down' && this.y < 440) {
-            this.y = this.y + 30
-        };
+            this.y = this.y + 30;
+        }
         if (key == 'down' && this.y > 440) {
             this.y = 425;
-        };
+        }
     }
+
     //Check win
     win() {
-        if (player.y <= 0) {
-            const modal = document.querySelector('.modal');
+        if (this.y <= 0) {
             modal.style.display = 'block';
-            player.resetPlayer();
-        };
+            document.querySelector(".modalButton").addEventListener('click', reloadGame);
+        }
     }
 
     resetPlayer() {
         this.x = 205;
         this.y = 425;
     }
+}
 
+
+function reloadGame() {
+    modal.style.display = 'none';
+    allEnemies.length = 0;
+    newbugs();
+}
+
+function newbugs() {
+    let bug1 = new Enemy(60);
+    let bug2 = new Enemy(130);
+    let bug3 = new Enemy(210);
+    allEnemies.push(bug1, bug2, bug3);
 }
 
 // Now instantiate your objects.
@@ -107,22 +120,14 @@ class Player {
 // Place the player object in a variable called player
 
 let allEnemies = [];
-/*function to create three enemy objects with y locations
-and push them into allEnemies array*/
-(function createEnemies() {
-    startEnemies = [60, 130, 210];
-    startEnemies.forEach(function(y) {
-        let startEn = new Enemy();
-        startEn.y = y;
-        allEnemies.push(startEn);
-    });
-})();
+newbugs();
+
 
 const player = new Player('images/char-pink-girl.png', 205, 425);
-let wins = 0;
+const modal = document.querySelector('.modal');
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keyup', function (e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
